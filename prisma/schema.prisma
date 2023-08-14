@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id Int @id
+  category_name String
+  subcategory_name String?
+  products Product[]
+}
+
+model Product {
+  id Int @id
+  category_id Int
+  category Category @relation(fields: [category_id], references: [id])
+  cookingtips CookingTips?
+  cookingMethods CookingMethods?
+  name String
+  name_subtitle String?
+  keywords String
+  pantry_min Int?
+  pantry_max Int?
+  pantry_metric String?
+  pantry_tips String?
+  pantry_after_opening_min Int?
+  pantry_after_opening_max Int?
+  pantry_after_opening_metric String?
+  refrigerate_min Int?
+  refrigerate_max Int?
+  refrigerate_metric String?
+  refrigerate_tips String?
+  refrigerate_after_opening_min Int?
+  refrigerate_after_opening_max Int?
+  refrigerate_after_opening_metric String?
+  refrigerate_after_thawing_min Int?
+  refrigerate_after_thawing_max Int?
+  refrigerate_after_thawing_metric String?
+  freeze_min Int?
+  freeze_max Int?
+  freeze_metric String?
+  freeze_tips String?
+}
+
+model CookingTips {
+  id Int @id
+  product_id Int @unique
+  product Product? @relation(fields: [product_id], references: [id])
+  tips String
+  safe_minimum_temperature Int?
+  rest_time Int?
+  rest_time_metric String?
+}
+
+model CookingMethods {
+  id Int @id
+  product_id Int @unique
+  product Product? @relation(fields: [product_id], references: [id])
+  cooking_method String
+  measure_from Int
+  measure_to Int
+  size_metric String
+  cooking_temperature Int
+  timing_from Int
+  timing_to Int
+  timing_metric String
+  timing_per String
+}

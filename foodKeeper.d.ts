@@ -128,7 +128,7 @@ declare interface FoodKeeper {
                     Refrigerate_After_Opening_Metric: string
                 },
                 {
-                    Refrigerate_After_Thawing_Min: number
+                    Refrigerate_After_Thawing_Min: number?
                 },
                 {
                     Refrigerate_After_Thawing_Max: number

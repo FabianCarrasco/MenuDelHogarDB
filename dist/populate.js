@@ -24,10 +24,34 @@ const fetchAndAssignData = () => __awaiter(void 0, void 0, void 0, function* () 
     let data;
     try {
         data = yield getData();
+        // await populateCategory(data)
         populateDatabase(data);
     }
     catch (error) {
         console.log('Error fetching data:', error);
+    }
+});
+const populateCategory = (foodKeeper) => __awaiter(void 0, void 0, void 0, function* () {
+    const prisma = new client_1.PrismaClient();
+    try {
+        yield prisma.$connect();
+        foodKeeper.sheets[1].data.forEach((category, i) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a;
+            const record = yield prisma.category.create({
+                data: {
+                    id: category[0].ID,
+                    category_name: category[1].Category_Name,
+                    subcategory_name: ((_a = category[2]) === null || _a === void 0 ? void 0 : _a.Subcategory_Name) || null
+                }
+            });
+            console.log('Category created: ', record.category_name);
+        }));
+    }
+    catch (error) {
+        console.log('Error: ', error);
+    }
+    finally {
+        yield prisma.$disconnect();
     }
 });
 const populateDatabase = (foodKeeper) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,52 +59,45 @@ const populateDatabase = (foodKeeper) => __awaiter(void 0, void 0, void 0, funct
     try {
         yield prisma.$connect();
         foodKeeper.sheets[2].data.forEach((product, i) => __awaiter(void 0, void 0, void 0, function* () {
-            const data = {
-                id: product[0].ID,
-                category_id: product[1].Category_ID,
-                name: product[2].Name,
-                keywords: product[4].Keywords
-            };
-            if (typeof product[3].Name_subtitle !== 'undefined') {
-                data.name_subtitle = product[3].Name_subtitle;
-            }
-            if (product[5].Pantry_Min !== undefined) {
-                data.pantry_min = product[5].Pantry_Min;
-            }
-            else if (product[9].DOP_Pantry_Min !== undefined) {
-                data.pantry_min = product[9].DOP_Pantry_Min;
+            var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7;
+            if (typeof ((_b = product[27]) === null || _b === void 0 ? void 0 : _b.Refrigerate_After_Thawing_Min) === 'string') {
+                product[27].Refrigerate_After_Thawing_Min = null;
             }
             const record = yield prisma.product.create({
                 data: {
                     id: product[0].ID,
-                    category_id: product[1].Category_ID,
                     name: product[2].Name,
-                    name_subtitle: product[3].Name_subtitle,
-                    keywords: product[4].Keywords,
-                    pantry_min: product[5].Pantry_Min || product[9].DOP_Pantry_Min,
-                    pantry_max: product[6].Pantry_Max || product[10].DOP_Pantry_Max,
-                    pantry_metric: product[7].Pantry_Metric || product[11].DOP_Pantry_Metric,
-                    pantry_tips: product[8].Pantry_tips || product[12].DOP_Pantry_tips,
-                    pantry_after_opening_min: product[13].Pantry_After_Opening_Min,
-                    pantry_after_opening_max: product[14].Pantry_After_Opening_Max,
-                    pantry_after_opening_metric: product[15].Pantry_After_Opening_Metric,
-                    refrigerate_min: product[16].Refrigerate_Min || product[20].DOP_Refrigerate_Min,
-                    refrigerate_max: product[17].Refrigerate_Max || product[21].DOP_Refrigerate_Max,
-                    refrigerate_metric: product[18].Refrigerate_Metric || product[22].DOP_Refrigerate_Metric,
-                    refrigerate_tips: product[19].Refrigerate_tips || product[23].DOP_Refrigerate_tips,
-                    refrigerate_after_opening_min: product[24].Refrigerate_After_Opening_Min,
-                    refrigerate_after_opening_max: product[25].Refrigerate_After_Opening_Max,
-                    refrigerate_after_opening_metric: product[26].Refrigerate_After_Opening_Metric,
-                    refrigerate_after_thawing_min: product[27].Refrigerate_After_Thawing_Min,
-                    refrigerate_after_thawing_max: product[28].Refrigerate_After_Thawing_Max,
-                    refrigerate_after_thawing_metric: product[29].Refrigerate_After_Thawing_Metric,
-                    freeze_min: product[30].Freeze_Min || product[34].DOP_Freeze_Min,
-                    freeze_max: product[31].Freeze_Max || product[35].DOP_Freeze_Max,
-                    freeze_metric: product[32].Freeze_Metric || product[36].DOP_Freeze_Metric,
-                    freeze_tips: product[33].Freeze_Tips || product[37].DOP_Freeze_Tips,
+                    name_subtitle: product[3].Name_subtitle || null,
+                    keywords: ((_c = product[4]) === null || _c === void 0 ? void 0 : _c.Keywords) || null,
+                    pantry_min: (((_d = product[5]) === null || _d === void 0 ? void 0 : _d.Pantry_Min) || ((_e = product[9]) === null || _e === void 0 ? void 0 : _e.DOP_Pantry_Min)) || null,
+                    pantry_max: (((_f = product[6]) === null || _f === void 0 ? void 0 : _f.Pantry_Max) || ((_g = product[10]) === null || _g === void 0 ? void 0 : _g.DOP_Pantry_Max)) || null,
+                    pantry_metric: (((_h = product[7]) === null || _h === void 0 ? void 0 : _h.Pantry_Metric) || ((_j = product[11]) === null || _j === void 0 ? void 0 : _j.DOP_Pantry_Metric)) || null,
+                    pantry_tips: (((_k = product[8]) === null || _k === void 0 ? void 0 : _k.Pantry_tips) || ((_l = product[12]) === null || _l === void 0 ? void 0 : _l.DOP_Pantry_tips)) || null,
+                    pantry_after_opening_min: ((_m = product[13]) === null || _m === void 0 ? void 0 : _m.Pantry_After_Opening_Min) || null,
+                    pantry_after_opening_max: ((_o = product[14]) === null || _o === void 0 ? void 0 : _o.Pantry_After_Opening_Max) || null,
+                    pantry_after_opening_metric: ((_p = product[15]) === null || _p === void 0 ? void 0 : _p.Pantry_After_Opening_Metric) || null,
+                    refrigerate_min: (((_q = product[16]) === null || _q === void 0 ? void 0 : _q.Refrigerate_Min) || ((_r = product[20]) === null || _r === void 0 ? void 0 : _r.DOP_Refrigerate_Min)) || null,
+                    refrigerate_max: (((_s = product[17]) === null || _s === void 0 ? void 0 : _s.Refrigerate_Max) || ((_t = product[21]) === null || _t === void 0 ? void 0 : _t.DOP_Refrigerate_Max)) || null,
+                    refrigerate_metric: (((_u = product[18]) === null || _u === void 0 ? void 0 : _u.Refrigerate_Metric) || ((_v = product[22]) === null || _v === void 0 ? void 0 : _v.DOP_Refrigerate_Metric)) || null,
+                    refrigerate_tips: (((_w = product[19]) === null || _w === void 0 ? void 0 : _w.Refrigerate_tips) || ((_x = product[23]) === null || _x === void 0 ? void 0 : _x.DOP_Refrigerate_tips)) || null,
+                    refrigerate_after_opening_min: ((_y = product[24]) === null || _y === void 0 ? void 0 : _y.Refrigerate_After_Opening_Min) || null,
+                    refrigerate_after_opening_max: ((_z = product[25]) === null || _z === void 0 ? void 0 : _z.Refrigerate_After_Opening_Max) || null,
+                    refrigerate_after_opening_metric: ((_0 = product[26]) === null || _0 === void 0 ? void 0 : _0.Refrigerate_After_Opening_Metric) || null,
+                    refrigerate_after_thawing_min: ((_1 = product[27]) === null || _1 === void 0 ? void 0 : _1.Refrigerate_After_Thawing_Min) || null,
+                    refrigerate_after_thawing_max: ((_2 = product[28]) === null || _2 === void 0 ? void 0 : _2.Refrigerate_After_Thawing_Max) || null,
+                    refrigerate_after_thawing_metric: ((_3 = product[29]) === null || _3 === void 0 ? void 0 : _3.Refrigerate_After_Thawing_Metric) || null,
+                    freeze_min: ((_4 = product[30]) === null || _4 === void 0 ? void 0 : _4.Freeze_Min) || null,
+                    freeze_max: ((_5 = product[31]) === null || _5 === void 0 ? void 0 : _5.Freeze_Max) || null,
+                    freeze_metric: ((_6 = product[32]) === null || _6 === void 0 ? void 0 : _6.Freeze_Metric) || null,
+                    freeze_tips: ((_7 = product[33]) === null || _7 === void 0 ? void 0 : _7.Freeze_Tips) || null,
+                    category: {
+                        connect: {
+                            id: product[1].Category_ID
+                        }
+                    }
                 }
             });
-            console.log('Product created: ', record.name);
+            console.log('Product created: ', record.name, ' ', record.id);
         }));
     }
     catch (error) {

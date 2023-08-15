@@ -25,11 +25,11 @@ model Product {
   cookingMethods CookingMethods?
   name String
   name_subtitle String?
-  keywords String
+  keywords String? @db.VarChar(1000)
   pantry_min Int?
   pantry_max Int?
   pantry_metric String?
-  pantry_tips String?
+  pantry_tips String? @db.VarChar(1000)
   pantry_after_opening_min Int?
   pantry_after_opening_max Int?
   pantry_after_opening_metric String?
